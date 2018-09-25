@@ -6,7 +6,7 @@ pipeline {
 
   }
   parameters {
-    string(name: SFTP_FILE_PATH, defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'FixPack upload location - "_Software/2017R1 Release & FixPacks/Tomcat/"')
+    string(name: SFTP_FILE_PATH, defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'FixPack upload location - _Software/2017R1 Release & FixPacks/Tomcat/')
     {
   stages {
     stage('Download-Artifacts') {
