@@ -3,6 +3,7 @@ pipeline {
     node {
       label 'dcust-bastion'
     }
+  }
 
  
   stages {
