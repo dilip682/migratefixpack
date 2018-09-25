@@ -1,5 +1,10 @@
 pipeline {
-  agent none
+  agent {
+    node {
+      label 'dcust-bastion'
+    }
+
+  }
   stages {
     stage('Download-Artifacts') {
       steps {
