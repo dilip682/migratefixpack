@@ -18,6 +18,7 @@ DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
 echo $DATESTAMP
 echo $SFTP_FILE_NAME
 echo `hostname`'''
+        input(message: 'Fix Pack File Name :', id: 'SFTP_FILE_PATH')
       }
     }
   }
