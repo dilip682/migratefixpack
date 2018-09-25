@@ -6,8 +6,9 @@ pipeline {
 
   }
   parameters {
-    string(name: SFTP_FILE_PATH, defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'FixPack upload location - _Software/2017R1 Release & FixPacks/Tomcat/')
-    {
+input id: '1', message: 'Migrating Fix Pack?', ok: 'Yes', parameters: [choice(choices: ['dcust', 'abc', 'mycompany', 'xyz'], description: 'Select Customer Name', name: 'CustomerName'), string(defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: '''Ex : BambooRoseTradeEngines-2017R1FP36-Tomcat.zip
+FixPack upload location - "_Software/2017R1 Release & FixPacks/Tomcat/"''', name: 'SFTP_FILE_PATH', trim: false)], submitter: 'admin', submitterParameter: 'SUBMITTER_NAME'
+  }
   stages {
     stage('Download-Artifacts') {
       steps {
