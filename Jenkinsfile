@@ -4,10 +4,7 @@ pipeline {
       label 'dcust-bastion'
     }
 
-  parameters {
-    string(name: SFTP_FILE_PATH, defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'FixPack upload location')
-  }
-  
+ 
   stages {
     stage('Download-Artifacts') {
       steps {
