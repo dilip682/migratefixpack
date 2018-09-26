@@ -60,8 +60,28 @@ END_SCRIPT
       }
     }
     stage('Transfer & Extract') {
-      steps {
-        sh 'echo "Transferring artifacts to APP, APP-INT and DB Servers"'
+      parallel {
+        stage('Transfer & Extract') {
+          steps {
+            sh 'echo "Transferring artifacts to APP, APP-INT and DB Servers"'
+            sh 'echo "Set Env Variables"'
+          }
+        }
+        stage('transfer to dcust-test01') {
+          steps {
+            echo 'Transfer to app01'
+          }
+        }
+        stage('transfer to dcust-testint') {
+          steps {
+            echo 'Transfer to Oracle tool box'
+          }
+        }
+        stage('transfer to dcust-test-Oracle-Tools') {
+          steps {
+            echo 'transfer to dcust-test-Oracle-Tools'
+          }
+        }
       }
     }
   }
