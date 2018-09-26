@@ -1,24 +1,25 @@
 pipeline {
-  agent any
-  parameters {
-    choice(name: 'door_choice',
-      choices: 'one\ntwo\nthree\nfour',
-      description: 'What door do you choose?')
-    booleanParam(name: 'CAN_DANCE',
-      defaultValue: true,
-      description: 'Checkbox parameter')
-    string(name: 'sTrAnGePaRaM',
-      defaultValue: 'Dance!',
-      description: 'Do the funky chicken!')
+  agent {
+    node {
+      label 'dcust-bastion'
+    }
+
   }
   stages {
-    stage('Example') {
+    stage('Download Artifact') {
       steps {
-        echo 'Hello World!'
-        echo "Trying: ${params.door_choice}"
-        echo "We can dance: ${params.CAN_DANCE}"
-        echo "The DJ says: ${params.sTrAnGePaRaM}"
+        echo "Customer Name: ${params.CUST_NAME}"
+        echo "Artifact Filename: ${params.SFTP_FILE_PATH}"
+        echo "Start Job?: ${params.START_JOB}"
       }
     }
+  }
+  parameters {
+    choice(name: 'CUST_NAME', choices: '''dcust
+abc
+xyz
+aaa''', description: 'Enter Customer name ?')
+    string(name: 'SFTP_FILE_PATH', defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'Artifact to be downloaded')
+    booleanParam(name: 'START_JOB', defaultValue: true, description: 'Checkbox parameter')
   }
 }
