@@ -123,7 +123,8 @@ mkdir $MIG_FOLDER
 cd /opt/ci/migrations/$MIG_FOLDER
 mv /opt/ci/jenkins-slave/migrations/*.zip  .
 echo "Presentl folder - `pwd`"
-unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '/opt/ci/stage/downloads/*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+echo "WORKSPACE - "$WORKSPACE
+unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '${WORKSPACE}/*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
   
           }
         }
