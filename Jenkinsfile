@@ -82,7 +82,7 @@ exit
         }
         stage('transfer to dcust-testint') {
           environment {
-                WORKSPACE_PATH = "${env.WORKSPACE}"
+                WORKSPACE_PATH = pwd()
                 }
           steps {
             echo 'Transfer to dcust-testint box'
