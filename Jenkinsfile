@@ -25,8 +25,7 @@ pipeline {
         echo "DATESTAMP :"$DATESTAMP
         SFTP_FILE_NAME=${SFTP_FILE_PATH}
         echo "File Name :"${SFTP_FILE_PATH}
-        sh 'pwd > pwd.txt'
-        WORKSPACE = readFile('pwd.txt')
+        WORKSPACE=`pwd`
         echo "WORKSPACE - "$WORKSPACE
 
         echo "##############"
