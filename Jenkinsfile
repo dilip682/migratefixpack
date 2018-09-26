@@ -16,7 +16,7 @@ pipeline {
 # Archive existing installable and download new installable 
 # from SFTP sftp://sftp://bamboorose.com
 ##################
-SFTP_FILE_NAME=$1
+# SFTP_FILE_NAME=$1
 DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
 echo $DATESTAMP
 echo $SFTP_FILE_NAME
