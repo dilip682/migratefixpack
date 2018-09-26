@@ -70,6 +70,14 @@ END_SCRIPT
         stage('transfer to dcust-test01') {
           steps {
             echo 'Transfer to app01'
+            sh '''#!/bin/bash -ex
+cd
+scp -i dilip.pem /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/*.zip ec2-user@10.0.3.28:/opt/ci/migrations/
+ssh -i dilip.pem ec2-user@10.0.3.28
+echo `hostname`
+echo `pwd`
+exit
+'''
           }
         }
         stage('transfer to dcust-testint') {
