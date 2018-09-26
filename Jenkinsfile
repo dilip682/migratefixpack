@@ -7,6 +7,10 @@ pipeline {
   }
   stages {
     stage('Download Artifact') {
+
+      environment {
+    SFTP_FILE_PATH = "${params.SFTP_FILE_PATH}"
+    }
       steps {
         echo "Customer Name: ${params.CUST_NAME}"
         echo "Artifact Filename: ${params.SFTP_FILE_PATH}"
