@@ -27,8 +27,12 @@ pipeline {
         # SFTP_FILE_NAME=$1
         DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
         echo $DATESTAMP
-        echo $SFTP_FILE_NAME
+        echo "From params - "${params.SFTP_FILE_PATH}
+        FILE_NAME: ${params.SFTP_FILE_PATH}
+        echo "FILE_NAME -"$FILE_NAME"
         echo "Inside shell script "$SFTP_FILE_NAME
+        SFTP_FILE_NAME=$FILE_NAME
+        echo "After assignmet "$SFTP_FILE_NAME
 
         echo "##############"
         echo "## Archiving previous installable if any at $DATESTAMP"
