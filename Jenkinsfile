@@ -1,29 +1,23 @@
 pipeline {
-  agent {
-    node {
-      label 'dcust-bastion'
-    }
-  }
+  agent any
   parameters {
-    string(name: 'SFTP_FILE_PATH',
-	defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip',
-	description: 'FixPack upload location')
+    choice(name: 'door_choice',
+      choices: 'one\ntwo\nthree\nfour',
+      description: 'What door do you choose?')
+    booleanParam(name: 'CAN_DANCE',
+      defaultValue: true,
+      description: 'Checkbox parameter')
+    string(name: 'sTrAnGePaRaM',
+      defaultValue: 'Dance!',
+      description: 'Do the funky chicken!')
   }
-
   stages {
-    stage('Download-Artifacts') {
+    stage('Example') {
       steps {
-        sh '''#!/bin/bash
-        ##################
-        # Archive existing installable and download new installable
-        # from SFTP sftp://sftp://bamboorose.com
-        ##################
-        SFTP_FILE_NAME=FileName
-        DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
-        echo $DATESTAMP
-        echo $SFTP_FILE_NAME
-        echo `hostname`'''
-        echo 'Testing...'
+        echo 'Hello World!'
+        echo "Trying: ${params.door_choice}"
+        echo "We can dance: ${params.CAN_DANCE}"
+        echo "The DJ says: ${params.sTrAnGePaRaM}"
       }
     }
   }
