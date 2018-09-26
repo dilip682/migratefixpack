@@ -3,7 +3,7 @@ pipeline {
   parameters {
     choice(name: 'door_choice',
       choices: 'one\ntwo\nthree\nfour',
-      description: 'What door do you choose ?')
+      description: 'What door do you choose.. ?')
     booleanParam(name: 'CAN_DANCE',
       defaultValue: true,
       description: 'Checkbox parameter')
