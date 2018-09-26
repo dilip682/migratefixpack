@@ -83,6 +83,8 @@ exit
         stage('transfer to dcust-testint') {
           steps {
             echo 'Transfer to Oracle tool box'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''echo "Testing..."
+echo `hostname`''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('transfer to dcust-test-Oracle-Tools') {
