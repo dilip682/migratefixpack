@@ -19,7 +19,7 @@ pipeline {
         sh 'echo "SFTP_FILE_PATH="$SFTP_FILE_PATH'
         sh 'echo "SFTP_FILE_PATH_1="$SFTP_FILE_PATH_1'
         sh '''
-        #!/bin/bash
+        #!/bin/bash -xe
         ##################
         # Archive existing installable and download new installable 
         # from SFTP sftp://sftp://bamboorose.com
@@ -28,7 +28,7 @@ pipeline {
         DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
         echo $DATESTAMP
         echo "From params - "${env.SFTP_FILE_PATH}
-        FILE_NAME = ${env.SFTP_FILE_PATH}
+        FILE_NAME = ${SFTP_FILE_PATH}
         echo "FILE_NAME -"$FILE_NAME"
         echo "Inside shell script "$SFTP_FILE_NAME
         SFTP_FILE_NAME=$FILE_NAME
