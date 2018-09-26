@@ -19,7 +19,7 @@ pipeline {
 abc
 xyz
 aaa''', description: 'Enter Customer name ?')
-string(name: 'SFTP_FILE_PATH', defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'Artifact to be downloaded')
+    string(name: 'SFTP_FILE_PATH', defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'Artifact to be downloaded')
     booleanParam(name: 'START_JOB', defaultValue: true, description: 'Checkbox parameter')
   }
 }
