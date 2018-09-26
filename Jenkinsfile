@@ -25,6 +25,9 @@ pipeline {
         echo "DATESTAMP :"$DATESTAMP
         SFTP_FILE_NAME=${SFTP_FILE_PATH}
         echo "File Name :"${SFTP_FILE_PATH}
+        sh 'pwd > pwd.txt'
+        WORKSPACE = readFile('pwd.txt')
+        echo "WORKSPACE - "$WORKSPACE
 
         echo "##############"
         echo "## Archiving previous installable if any at $DATESTAMP"
@@ -55,7 +58,8 @@ END_SCRIPT
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
         echo "##############"
         pwd
-        cp -Rf *.zip /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/
+        #cp -Rf *.zip /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/
+        cp -Rf *.zip $WORKSPACE
         '''
       }
     }
@@ -128,7 +132,7 @@ mv /opt/ci/jenkins-slave/migrations/*.zip  .
 echo "Presentl folder - `pwd`"
 echo "WORKSPACE - "${WORKSPACE_PATH}
 echo "WORKSPACE-- - "$WORKSPACE_PATH
-unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '${WORKSPACE_PATH}/*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
   
           }
         }
