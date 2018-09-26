@@ -9,18 +9,18 @@ pipeline {
     stage('Download Artifact') {
       steps {
         echo 'Enter File Name '
-        echo "Trying: ${params.door_choice}"
-        echo "We can dance: ${params.CAN_DANCE}"
+        echo "Trying: ${params.CUST_NAME}"
+        echo "We can dance: ${params.SFTP_FILE_PATH}"
         echo "The DJ says: ${params.sTrAnGePaRaM}"
       }
     }
   }
   parameters {
-    choice(name: 'door_choice', choices: '''one
-two
-three
-four''', description: 'What door do you choose.. ?')
-    booleanParam(name: 'CAN_DANCE', defaultValue: true, description: 'Checkbox parameter')
+    choice(name: 'CUST_NAME', choices: '''dcust
+abc
+xyz
+aaa''', description: 'Enter Customer name ?')
+    booleanParam(name: 'SFTP_FILE_PATH', defaultValue: true, description: 'Checkbox parameter')
     string(name: 'sTrAnGePaRaM', defaultValue: 'Dance!', description: 'Do the funky chicken!')
   }
 }
