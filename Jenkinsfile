@@ -42,10 +42,15 @@ pipeline {
         lftp<<END_SCRIPT
         open sftp://sftp.bamboorose.com
         user dilip@br `echo Q29sb25lbDEh | base64 --decode`
-        cd "_Software/2017R1 Release & FixPacks/Tomcat"
-        get $SFTP_FILE_NAME
+        cd "_Software/2017R1 Release & FixPacks/Tomcat"       
         bye
 END_SCRIPT
+        # Comment out below line to download actual file &
+        # add below line at the end of FTP (above bye statement)
+        # get $SFTP_FILE_NAME
+        touch /opt/ci/stage/downloads/$SFTP_FILE_NAME        
+
+
         echo "##############"
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
         echo "##############"
