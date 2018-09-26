@@ -81,6 +81,9 @@ exit
           }
         }
         stage('transfer to dcust-testint') {
+          environment {
+                WORKSPACE_PATH = "${env.WORKSPACE}"
+                }
           steps {
             echo 'Transfer to dcust-testint box'
           sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
@@ -123,8 +126,9 @@ mkdir $MIG_FOLDER
 cd /opt/ci/migrations/$MIG_FOLDER
 mv /opt/ci/jenkins-slave/migrations/*.zip  .
 echo "Presentl folder - `pwd`"
-echo "WORKSPACE - "$WORKSPACE
-unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '${WORKSPACE}/*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+echo "WORKSPACE - "${WORKSPACE_PATH}
+echo "WORKSPACE-- - "$WORKSPACE_PATH
+unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '${WORKSPACE_PATH}/*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
   
           }
         }
