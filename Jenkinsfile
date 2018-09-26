@@ -46,8 +46,7 @@ pipeline {
         cd "_Software/2017R1 Release & FixPacks/Tomcat"
         get $SFTP_FILE_NAME
         bye
-        END_SCRIPT
-
+END_SCRIPT
         echo "##############"
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
         echo "##############"
