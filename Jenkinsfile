@@ -15,9 +15,6 @@ pipeline {
         echo "Customer Name: ${params.CUST_NAME}"
         echo "Artifact Filename: ${params.SFTP_FILE_PATH}"
         echo "Start Job?: ${params.START_JOB}"
-        sh 'export SFTP_FILE_PATH_1=$SFTP_FILE_PATH'
-        sh 'echo "SFTP_FILE_PATH="$SFTP_FILE_PATH'
-        sh 'echo "SFTP_FILE_PATH_1="$SFTP_FILE_PATH_1'
         sh '''
         #!/bin/bash -xe
         ##################
@@ -26,13 +23,9 @@ pipeline {
         ##################
         # SFTP_FILE_NAME=$1
         DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
-        echo $DATESTAMP
-        echo "From params - "${SFTP_FILE_PATH}
-        FILE_NAME = ${SFTP_FILE_PATH}
-        echo "FILE_NAME -"$FILE_NAME"
-        echo "Inside shell script "$SFTP_FILE_NAME
-        SFTP_FILE_NAME=$FILE_NAME
-        echo "After assignmet "$SFTP_FILE_NAME
+        echo "DATESTAMP :"$DATESTAMP
+        SFTP_FILE_NAME=${SFTP_FILE_PATH}
+        echo "File Name :"${SFTP_FILE_PATH}
 
         echo "##############"
         echo "## Archiving previous installable if any at $DATESTAMP"
