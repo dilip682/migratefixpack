@@ -78,6 +78,7 @@ echo `hostname`
 echo `pwd`
 exit
 '''
+            node(label: 'dcust-test01')
           }
         }
         stage('transfer to dcust-testint') {
