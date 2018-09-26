@@ -7,10 +7,9 @@ pipeline {
   }
   stages {
     stage('Download Artifact') {
-
       environment {
-    SFTP_FILE_PATH = "${params.SFTP_FILE_PATH}"
-    }
+        SFTP_FILE_PATH = "${params.SFTP_FILE_PATH}"
+      }
       steps {
         echo "Customer Name: ${params.CUST_NAME}"
         echo "Artifact Filename: ${params.SFTP_FILE_PATH}"
@@ -53,6 +52,11 @@ END_SCRIPT
         pwd
         cp -Rf *.zip /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/
         '''
+      }
+    }
+    stage('Transfer & Extract') {
+      steps {
+        sh 'echo "Transferring artifacts to APP, APP-INT and DB Servers"'
       }
     }
   }
