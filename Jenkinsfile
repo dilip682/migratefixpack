@@ -73,23 +73,15 @@ END_SCRIPT
         stage('transfer to dcust-test01') {
           steps {
             echo 'Transfer to app01'
-            sh '''#!/bin/bash -ex
-cd
-scp -i dilip.pem /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/*.zip ec2-user@10.0.3.28:/opt/ci/migrations/
-ssh -i dilip.pem ec2-user@10.0.3.28
-echo `hostname`
-echo `pwd`
-exit
-'''
           }
         }
         stage('transfer to dcust-testint') {
           environment {
-                WORKSPACE_PATH = pwd()
-                }
+            WORKSPACE_PATH = pwd()
+          }
           steps {
             echo 'Transfer to dcust-testint box'
-          sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
 ##################
 # Transfer installable from Bastion host to App and DB Servers &
 # unzip installable at stage location /opt/ci/migrations/
@@ -132,7 +124,6 @@ echo "Presentl folder - `pwd`"
 echo "WORKSPACE - "${WORKSPACE_PATH}
 echo "WORKSPACE-- - "$WORKSPACE_PATH
 unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-  
           }
         }
         stage('transfer to dcust-test-Oracle-Tools') {
