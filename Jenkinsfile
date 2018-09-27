@@ -210,7 +210,6 @@ END_SCRIPT
             echo "Presentl folder - `pwd`"
             unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
-          }
         }
       }
     }
