@@ -72,7 +72,48 @@ END_SCRIPT
         }
         stage('transfer to dcust-test01') {
           steps {
-            echo 'Transfer to app01'
+            echo 'Transfer to dcust-test01 box'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            ##################
+            # Transfer installable from Bastion host to App and DB Servers &
+            # unzip installable at stage location /opt/ci/migrations/
+            ##################
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+
+            echo "##############"
+            echo "## Create initial folders if it\'s first time migration "
+            echo "##############"
+            if [ ! -d /opt/ci/migrations/archive ]; then
+                mkdir -p /opt/ci/migrations/archive;
+            fi;
+
+            echo "##############"
+            echo "## Archiving previous installable if any at $DATESTAMP"
+            echo "##############"
+            cd /opt/ci/migrations/
+            ## Archive zip files 
+            if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
+                    for file in *.zip; do
+                        mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
+                    done
+            fi
+
+            ## Archive folders
+            for D in mig*; do
+                if [ -d "${D}" ]; then
+                        echo "${D}"
+                        mv "${D}" "archive/${D%.zip}-$DATESTAMP"
+                        echo  "${D}" "archive/${D%.zip}-$DATESTAMP"
+                fi
+            done
+
+            echo "## Moving installable to stage location /opt/ci/migrations/"
+            mkdir $MIG_FOLDER 
+            cd /opt/ci/migrations/$MIG_FOLDER
+            mv /opt/ci/jenkins-slave/migrations/*.zip  .
+            echo "Presentl folder - `pwd`"
+            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('transfer to dcust-testint') {
@@ -81,54 +122,94 @@ END_SCRIPT
           }
           steps {
             echo 'Transfer to dcust-testint box'
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
-##################
-# Transfer installable from Bastion host to App and DB Servers &
-# unzip installable at stage location /opt/ci/migrations/
-##################
-DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
-MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-testint', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            ##################
+            # Transfer installable from Bastion host to App and DB Servers &
+            # unzip installable at stage location /opt/ci/migrations/
+            ##################
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
 
-echo "##############"
-echo "## Create initial folders if it\'s first time migration "
-echo "##############"
-if [ ! -d /opt/ci/migrations/archive ]; then
-    mkdir -p /opt/ci/migrations/archive;
-fi;
+            echo "##############"
+            echo "## Create initial folders if it\'s first time migration "
+            echo "##############"
+            if [ ! -d /opt/ci/migrations/archive ]; then
+                mkdir -p /opt/ci/migrations/archive;
+            fi;
 
-echo "##############"
-echo "## Archiving previous installable if any at $DATESTAMP"
-echo "##############"
-cd /opt/ci/migrations/
-## Archive zip files 
-if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
-        for file in *.zip; do
-            mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
-        done
-fi
+            echo "##############"
+            echo "## Archiving previous installable if any at $DATESTAMP"
+            echo "##############"
+            cd /opt/ci/migrations/
+            ## Archive zip files 
+            if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
+                    for file in *.zip; do
+                        mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
+                    done
+            fi
 
-## Archive folders
-for D in mig*; do
-    if [ -d "${D}" ]; then
-            echo "${D}"
-            mv "${D}" "archive/${D%.zip}-$DATESTAMP"
-            echo  "${D}" "archive/${D%.zip}-$DATESTAMP"
-    fi
-done
+            ## Archive folders
+            for D in mig*; do
+                if [ -d "${D}" ]; then
+                        echo "${D}"
+                        mv "${D}" "archive/${D%.zip}-$DATESTAMP"
+                        echo  "${D}" "archive/${D%.zip}-$DATESTAMP"
+                fi
+            done
 
-echo "## Moving installable to stage location /opt/ci/migrations/"
-mkdir $MIG_FOLDER 
-cd /opt/ci/migrations/$MIG_FOLDER
-mv /opt/ci/jenkins-slave/migrations/*.zip  .
-echo "Presentl folder - `pwd`"
-echo "WORKSPACE - "${WORKSPACE_PATH}
-echo "WORKSPACE-- - "$WORKSPACE_PATH
-unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            echo "## Moving installable to stage location /opt/ci/migrations/"
+            mkdir $MIG_FOLDER 
+            cd /opt/ci/migrations/$MIG_FOLDER
+            mv /opt/ci/jenkins-slave/migrations/*.zip  .
+            echo "Presentl folder - `pwd`"
+            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('transfer to dcust-test-Oracle-Tools') {
           steps {
-            echo 'transfer to dcust-test-Oracle-Tools'
+            echo 'Transfer to dcust-test-Oracle-Tools box'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            ##################
+            # Transfer installable from Bastion host to App and DB Servers &
+            # unzip installable at stage location /opt/ci/migrations/
+            ##################
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+
+            echo "##############"
+            echo "## Create initial folders if it\'s first time migration "
+            echo "##############"
+            if [ ! -d /opt/ci/migrations/archive ]; then
+                mkdir -p /opt/ci/migrations/archive;
+            fi;
+
+            echo "##############"
+            echo "## Archiving previous installable if any at $DATESTAMP"
+            echo "##############"
+            cd /opt/ci/migrations/
+            ## Archive zip files 
+            if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
+                    for file in *.zip; do
+                        mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
+                    done
+            fi
+
+            ## Archive folders
+            for D in mig*; do
+                if [ -d "${D}" ]; then
+                        echo "${D}"
+                        mv "${D}" "archive/${D%.zip}-$DATESTAMP"
+                        echo  "${D}" "archive/${D%.zip}-$DATESTAMP"
+                fi
+            done
+
+            echo "## Moving installable to stage location /opt/ci/migrations/"
+            mkdir $MIG_FOLDER 
+            cd /opt/ci/migrations/$MIG_FOLDER
+            mv /opt/ci/jenkins-slave/migrations/*.zip  .
+            echo "Presentl folder - `pwd`"
+            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+          }
           }
         }
       }
