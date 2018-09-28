@@ -213,6 +213,68 @@ END_SCRIPT
         }
       }
     }
+    stage('Upgrade Applications') {
+      parallel {
+        stage('Upgrade Trade Engine') {
+          steps {
+            echo 'Upgrading Trade Engine'
+          }
+        }
+        stage('Shutdown App Instances') {
+          steps {
+            echo 'Shutdown Tomcat'
+          }
+        }
+        stage('Copy War File') {
+          steps {
+            echo 'Copying war file'
+          }
+        }
+        stage('Post Install Config') {
+          steps {
+            echo 'Performing post install configurations'
+          }
+        }
+      }
+    }
+    stage('Upgrade DB') {
+      parallel {
+        stage('Upgrade DB') {
+          steps {
+            echo 'Upgrading TE DB'
+          }
+        }
+        stage('Backup DB') {
+          steps {
+            echo 'Backing up old DB'
+          }
+        }
+        stage('Upgrade DB') {
+          steps {
+            echo 'Upgrading DB'
+          }
+        }
+      }
+    }
+    stage('Post upgrade Config') {
+      parallel {
+        stage('Post upgrade Config') {
+          steps {
+            echo 'Performing post upgrade config'
+          }
+        }
+        stage('Start Tomcat Instances') {
+          steps {
+            echo 'Starting Tomcat Instances'
+          }
+        }
+        stage('Change Dashboard msg') {
+          steps {
+            echo 'Changing Dashboard msg'
+          }
+        }
+      }
+    }
   }
   parameters {
     choice(name: 'CUST_NAME', choices: '''dcust
