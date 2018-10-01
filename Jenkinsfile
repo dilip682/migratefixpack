@@ -242,7 +242,7 @@ END_SCRIPT
             cd $CATALINA_HOME/webapps
             sudo rm -Rf dev.war
             sudo rm -Rf dev
-            sudo rm -Rf work/Catalina/localhost/dev            
+            sudo rm -Rf $CATALINA_HOME/work/Catalina/localhost/dev            
             
             echo "## copy .war to $CATALINA_HOME/webapps"
             sudo cp -Rf /opt/ci/migrations/$MIG_FOLDER/*Tomcat.war $CATALINA_HOME/webapps/dev.war       
@@ -295,6 +295,19 @@ END_SCRIPT
         stage('Start Tomcat Instances') {
           steps {
             echo 'Starting Tomcat Instances'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+           
+            ##################
+            # Start Tomcat
+            ##################
+            sudo systemctl start tomcat
+
+            ##################
+            # Test Home Page
+            ##################
+            echo "## Test Home Page"
+            curl "http://dcust-elb-398506934.ap-northeast-1.elb.amazonaws.com/dev/login.jsp"
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('Change Dashboard msg') {
