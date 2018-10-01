@@ -112,13 +112,13 @@ END_SCRIPT
             echo "## Copy installable to /usr/share/client_folders/"
             cd /usr/share/client_folders/
             sudo mkdir -p dev/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/${SFTP_FILE_PATH}.zip  dev/$MIG_FOLDER/
+            cp /opt/ci/jenkins-slave/migrations/${SFTP_FILE_PATH}  dev/$MIG_FOLDER/
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
             cd /opt/ci/migrations/
             mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/${.SFTP_FILE_PATH}.zip  .
+            cp /opt/ci/jenkins-slave/migrations/${SFTP_FILE_PATH}  .
             echo "Presentl folder - `pwd`"
             unzip -o *.zip
 
