@@ -277,7 +277,7 @@ END_SCRIPT
             MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
             
             ##################
-            # Update deploy.properties file
+            # Update deploydb.properties file
             ##################
             cd /opt/ci/migrations/$MIG_FOLDER/
             sudo cp -Rf /opt/ci/stage/customers/dcust/dev/deploydb-dcust-dev.properties deploydb.properties
@@ -311,11 +311,9 @@ END_SCRIPT
             MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
             
             ##################
-            # Update deploy.properties file
+            # Update deploydb.properties file
             ##################
             cd /opt/ci/migrations/$MIG_FOLDER/
-            sudo cp -Rf /opt/ci/stage/customers/dcust/dev/deploydb-dcust-dev.properties deploy.properties
-            sudo chmod 755 deploydb.properties
             sh install.sh upgrade_oracle
             echo "## install.sh complete"            
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
