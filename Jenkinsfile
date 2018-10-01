@@ -274,7 +274,6 @@ END_SCRIPT
         }
       }
     }
-    stage('Upgrade DB') {
       stage('Backup DB') {
         steps {
           echo 'Backing up old DB'
@@ -326,7 +325,6 @@ END_SCRIPT
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
-    }
     stage('Post upgrade Config') {
       parallel {
         stage('Post upgrade Config') {
