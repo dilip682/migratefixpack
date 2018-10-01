@@ -17,7 +17,7 @@ pipeline {
         sh '''
         #!/bin/bash -xe
         ##################
-        # Archive existing installable and download new installable 
+        # Archive existing installable and download new installable
         # from SFTP sftp://sftp://bamboorose.com
         ##################
         # SFTP_FILE_NAME=$1
@@ -44,7 +44,7 @@ pipeline {
         lftp<<END_SCRIPT
         open sftp://sftp.bamboorose.com
         user dilip@br `echo Q29sb25lbDEh | base64 --decode`
-        cd "_Software/2017R1 Release & FixPacks/Tomcat"       
+        cd "_Software/2017R1 Release & FixPacks/Tomcat"
         bye
 END_SCRIPT
         # Comment out below line to download actual file &
@@ -53,7 +53,7 @@ END_SCRIPT
         # touch test.txt
         # zip /opt/ci/stage/downloads/$SFTP_FILE_NAME test.txt
         cp /opt/ci/stage/TE-Software/$SFTP_FILE_NAME .
-        
+
         echo "##############"
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
         echo "##############"
@@ -68,7 +68,6 @@ END_SCRIPT
         stage('Transfer & Extract') {
           steps {
             sh 'echo "Transferring artifacts to APP, APP-INT and DB Servers"'
-            sh 'echo "Set Env Variables"'
           }
         }
         stage('transfer to dcust-test01') {
@@ -93,7 +92,7 @@ END_SCRIPT
             echo "## Archiving previous installable if any at $DATESTAMP"
             echo "##############"
             cd /opt/ci/migrations/
-            ## Archive zip files 
+            ## Archive zip files
             if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
                     for file in *.zip; do
                         mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
@@ -109,13 +108,24 @@ END_SCRIPT
                 fi
             done
 
+            echo "## Copy installable to /usr/share/client_folders/"
+            cd /usr/share/client_folders/
+            mkdir -p dev/$MIG_FOLDER
+            cp /opt/ci/jenkins-slave/migrations/*.zip  dev/$MIG_FOLDER/
+
             echo "## Moving installable to stage location /opt/ci/migrations/"
             cd /opt/ci/migrations/
-            mkdir $MIG_FOLDER 
+            mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
-            mv /opt/ci/jenkins-slave/migrations/*.zip  .
+            cp /opt/ci/jenkins-slave/migrations/*.zip  .
             echo "Presentl folder - `pwd`"
-            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            unzip -o *.zip
+
+            echo "## Remove ${params.SFTP_FILE_PATH}"
+            rm -Rf ${params.SFTP_FILE_PATH}
+            touch ${params.SFTP_FILE_PATH}
+
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('transfer to dcust-testint') {
@@ -143,7 +153,7 @@ END_SCRIPT
             echo "## Archiving previous installable if any at $DATESTAMP"
             echo "##############"
             cd /opt/ci/migrations/
-            ## Archive zip files 
+            ## Archive zip files
             if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
                     for file in *.zip; do
                         mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
@@ -160,11 +170,17 @@ END_SCRIPT
             done
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
-            mkdir $MIG_FOLDER 
+            mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
             mv /opt/ci/jenkins-slave/migrations/*.zip  .
             echo "Presentl folder - `pwd`"
-            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            unzip -o *.zip
+
+            echo "## Remove ${params.SFTP_FILE_PATH}"
+            rm -Rf ${params.SFTP_FILE_PATH}
+            touch ${params.SFTP_FILE_PATH}
+
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('transfer to dcust-test-Oracle-Tools') {
@@ -189,7 +205,7 @@ END_SCRIPT
             echo "## Archiving previous installable if any at $DATESTAMP"
             echo "##############"
             cd /opt/ci/migrations/
-            ## Archive zip files 
+            ## Archive zip files
             if ls /opt/ci/migrations/*.zip > /dev/null 2>&1; then
                     for file in *.zip; do
                         mv "$file" "archive/${file%.zip}-$DATESTAMP.zip"
@@ -206,16 +222,23 @@ END_SCRIPT
             done
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
-            mkdir $MIG_FOLDER 
+            mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
             mv /opt/ci/jenkins-slave/migrations/*.zip  .
             echo "Presentl folder - `pwd`"
-            unzip -o *.zip''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            unzip -o *.zip
+
+            echo "## Remove ${params.SFTP_FILE_PATH}"
+            rm -Rf ${params.SFTP_FILE_PATH}
+            touch ${params.SFTP_FILE_PATH}
+
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
       }
     }
     stage('Upgrade Applications') {
+
       parallel {
         stage('Upgrade Trade Engine') {
           steps {
@@ -225,7 +248,7 @@ END_SCRIPT
             DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
             MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
             source /etc/tomcat/tomcat.conf
-            
+
             ##################
             # Shutdown Tomcat
             ##################
@@ -237,45 +260,48 @@ END_SCRIPT
             echo "## Backup old .war to /opt/ci/migrations/$MIG_FOLDER/backup"
             sudo mkdir -p /opt/ci/migrations/$MIG_FOLDER/backup
             sudo cp -Rf $CATALINA_HOME/webapps/dev.war /opt/ci/migrations/$MIG_FOLDER/backup/dev-$DATESTAMP.war
-            
+
             echo "## Clear Cache"
             cd $CATALINA_HOME/webapps
             sudo rm -Rf dev.war
             sudo rm -Rf dev
-            sudo rm -Rf $CATALINA_HOME/work/Catalina/localhost/dev            
-            
+            sudo rm -Rf $CATALINA_HOME/work/Catalina/localhost/dev
+
             echo "## copy .war to $CATALINA_HOME/webapps"
-            sudo cp -Rf /opt/ci/migrations/$MIG_FOLDER/*Tomcat.war $CATALINA_HOME/webapps/dev.war       
+            sudo cp -Rf /opt/ci/migrations/$MIG_FOLDER/*Tomcat.war $CATALINA_HOME/webapps/dev.war
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-          }
-        }
-        stage('Shutdown App Instances') {
-          steps {
-            echo 'Shutdown Tomcat'
-          }
-        }
-        stage('Copy War File') {
-          steps {
-            echo 'Copying war file'
-          }
-        }
-        stage('Post Install Config') {
-          steps {
-            echo 'Performing post install configurations'
           }
         }
       }
     }
     stage('Upgrade DB') {
-      parallel {
-        stage('Upgrade DB') {
+      stage('Backup DB') {
+        steps {
+          echo 'Backing up old DB'
+          sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+          echo "## Set Env"
+          DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+          MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+
+          ##################
+          # Backup DB
+          ##################
+          cd /opt/ci/migrations/$MIG_FOLDER/
+          sudo chmod 755 deploydb.properties
+          exp tssdemo/stone01@DEV file=DCUST.dmp log=DCUST_DEV.log
+          tail DCUST_DEV.log
+          echo "## Backup complete"
+          ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+        }
+      }
+        stage('Pre-Upgrade config') {
           steps {
             echo 'Pre-Upgrade config'
             sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
             echo "## Set Env"
             DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
             MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
-            
+
             ##################
             # Update deploydb.properties file
             ##################
@@ -284,42 +310,22 @@ END_SCRIPT
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
-        stage('Backup DB') {
-          steps {
-            echo 'Backing up old DB'
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
-            echo "## Set Env"
-            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
-            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
-            
-            ##################
-            # Backup DB
-            ##################
-            cd /opt/ci/migrations/$MIG_FOLDER/
-            sudo chmod 755 deploydb.properties
-            exp tssdemo/stone01@DEV file=DCUST.dmp log=DCUST_DEV.log
-            tail DCUST_DEV.log
-            echo "## Backup complete"            
-            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-          }
-        }
         stage('Upgrade DB') {
           steps {
             sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
             echo "## Set Env"
             DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
             MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
-            
+
             ##################
             # Update deploydb.properties file
             ##################
             cd /opt/ci/migrations/$MIG_FOLDER/
             sh install.sh upgrade_oracle
-            echo "## install.sh complete"            
+            echo "## install.sh complete"
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
-      }
     }
     stage('Post upgrade Config') {
       parallel {
@@ -328,29 +334,30 @@ END_SCRIPT
             echo 'Performing post upgrade config'
           }
         }
-        stage('Start Tomcat Instances') {
-          steps {
-            echo 'Starting Tomcat Instances'
-            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
-           
-            ##################
-            # Start Tomcat
-            ##################
-            sudo systemctl start tomcat
 
-            ##################
-            # Test Home Page
-            ##################
-            echo "## Test Home Page"
-            curl "http://dcust-elb-398506934.ap-northeast-1.elb.amazonaws.com/dev/login.jsp"
-            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-          }
-        }
         stage('Change Dashboard msg') {
           steps {
             echo 'Changing Dashboard msg'
           }
         }
+      }
+    }
+    stage('Start Tomcat Instances') {
+      steps {
+        echo 'Starting Tomcat Instances'
+        sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+
+        ##################
+        # Start Tomcat
+        ##################
+        sudo systemctl start tomcat
+
+        ##################
+        # Test Home Page
+        ##################
+        echo "## Test Home Page"
+        curl "http://dcust-elb-398506934.ap-northeast-1.elb.amazonaws.com/dev/tss.jsp"
+        ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
       }
     }
   }
