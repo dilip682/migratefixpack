@@ -111,14 +111,14 @@ END_SCRIPT
 
             echo "## Copy installable to /usr/share/client_folders/"
             cd /usr/share/client_folders/
-            mkdir -p dev/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/*.zip  dev/$MIG_FOLDER/
+            sudo mkdir -p dev/$MIG_FOLDER
+            cp /opt/ci/jenkins-slave/migrations/${params.SFTP_FILE_PATH}.zip  dev/$MIG_FOLDER/
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
             cd /opt/ci/migrations/
             mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/*.zip  .
+            cp /opt/ci/jenkins-slave/migrations/${params.SFTP_FILE_PATH}.zip  .
             echo "Presentl folder - `pwd`"
             unzip -o *.zip
 
@@ -365,7 +365,11 @@ END_SCRIPT
 abc
 xyz
 aaa''', description: 'Enter Customer name ?')
+        choice(name: 'LIFE_CYCLE', choices: '''dev
+tst
+stg
+uat''', description: 'Enter Life cycle name ?')
     string(name: 'SFTP_FILE_PATH', defaultValue: 'BambooRoseTradeEngines-2017R1FP36-Tomcat.zip', description: 'Artifact to be downloaded')
-    booleanParam(name: 'START_JOB', defaultValue: true, description: 'Checkbox parameter')
+    booleanParam(name: 'UPGRADE_DB_Q', defaultValue: true, description: 'Upgrade DB?')
   }
 }
