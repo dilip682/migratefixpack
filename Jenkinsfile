@@ -112,19 +112,19 @@ END_SCRIPT
             echo "## Copy installable to /usr/share/client_folders/"
             cd /usr/share/client_folders/
             sudo mkdir -p dev/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/${params.SFTP_FILE_PATH}.zip  dev/$MIG_FOLDER/
+            cp /opt/ci/jenkins-slave/migrations/${SFTP_FILE_PATH}.zip  dev/$MIG_FOLDER/
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
             cd /opt/ci/migrations/
             mkdir $MIG_FOLDER
             cd /opt/ci/migrations/$MIG_FOLDER
-            cp /opt/ci/jenkins-slave/migrations/${params.SFTP_FILE_PATH}.zip  .
+            cp /opt/ci/jenkins-slave/migrations/${.SFTP_FILE_PATH}.zip  .
             echo "Presentl folder - `pwd`"
             unzip -o *.zip
 
-            echo "## Remove ${params.SFTP_FILE_PATH}"
-            rm -Rf ${params.SFTP_FILE_PATH}
-            touch ${params.SFTP_FILE_PATH}
+            echo "## Remove $SFTP_FILE_PATH"
+            rm -Rf ${SFTP_FILE_PATH}
+            touch ${SFTP_FILE_PATH}
 
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
@@ -177,9 +177,9 @@ END_SCRIPT
             echo "Presentl folder - `pwd`"
             unzip -o *.zip
 
-            echo "## Remove ${params.SFTP_FILE_PATH}"
-            rm -Rf ${params.SFTP_FILE_PATH}
-            touch ${params.SFTP_FILE_PATH}
+            echo "## Remove ${SFTP_FILE_PATH}"
+            rm -Rf ${SFTP_FILE_PATH}
+            touch ${SFTP_FILE_PATH}
 
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
@@ -229,9 +229,9 @@ END_SCRIPT
             echo "Presentl folder - `pwd`"
             unzip -o *.zip
 
-            echo "## Remove ${params.SFTP_FILE_PATH}"
-            rm -Rf ${params.SFTP_FILE_PATH}
-            touch ${params.SFTP_FILE_PATH}
+            echo "## Remove ${SFTP_FILE_PATH}"
+            rm -Rf ${SFTP_FILE_PATH}
+            touch ${SFTP_FILE_PATH}
 
             ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: 'migrations/', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.zip')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
