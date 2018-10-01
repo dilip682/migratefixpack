@@ -270,17 +270,55 @@ END_SCRIPT
       parallel {
         stage('Upgrade DB') {
           steps {
-            echo 'Upgrading TE DB'
+            echo 'Pre-Upgrade config'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            echo "## Set Env"
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+            
+            ##################
+            # Update deploy.properties file
+            ##################
+            cd /opt/ci/migrations/$MIG_FOLDER/
+            sudo cp -Rf /opt/ci/stage/customers/dcust/dev/deploydb-dcust-dev.properties deploydb.properties
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('Backup DB') {
           steps {
             echo 'Backing up old DB'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            echo "## Set Env"
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+            
+            ##################
+            # Backup DB
+            ##################
+            cd /opt/ci/migrations/$MIG_FOLDER/
+            sudo chmod 755 deploydb.properties
+            exp tssdemo/stone01@DEV file=DCUST.dmp log=DCUST_DEV.log
+            tail DCUST_DEV.log
+            echo "## Backup complete"            
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('Upgrade DB') {
           steps {
-            echo 'Upgrading DB'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test-Oracle-Tools', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            echo "## Set Env"
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+            
+            ##################
+            # Update deploy.properties file
+            ##################
+            cd /opt/ci/migrations/$MIG_FOLDER/
+            sudo cp -Rf /opt/ci/stage/customers/dcust/dev/deploydb-dcust-dev.properties deploy.properties
+            sudo chmod 755 deploydb.properties
+            sh install.sh upgrade_oracle
+            echo "## install.sh complete"            
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
       }
