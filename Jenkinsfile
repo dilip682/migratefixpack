@@ -57,7 +57,7 @@ END_SCRIPT
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
         echo "##############"
         pwd
-        #cp -Rf *.zip /opt/ci/jenkins-slave/workspace/dcust/transfer-and-extract/
+        echo "Zip file copied to ${WORKSPACE}"
         cp -Rf *.zip $WORKSPACE
         '''
       }
@@ -109,6 +109,7 @@ END_SCRIPT
             done
 
             echo "## Moving installable to stage location /opt/ci/migrations/"
+            cd /opt/ci/migrations/
             mkdir $MIG_FOLDER 
             cd /opt/ci/migrations/$MIG_FOLDER
             mv /opt/ci/jenkins-slave/migrations/*.zip  .
@@ -218,6 +219,33 @@ END_SCRIPT
         stage('Upgrade Trade Engine') {
           steps {
             echo 'Upgrading Trade Engine'
+            sshPublisher(publishers: [sshPublisherDesc(configName: 'dcust-test01', transfers: [sshTransfer(excludes: '', execCommand: '''#!/bin/bash -ex
+            echo "## Set Env"
+            DATESTAMP=`date --date=\'today\' +"%d-%m-%Y-%H-%M-%S"`
+            MIG_FOLDER=mig-`date --date=\'today\' +"%d-%m-%Y"`
+            source /etc/tomcat/tomcat.conf
+            
+            ##################
+            # Shutdown Tomcat
+            ##################
+            sudo systemctl stop tomcat
+
+            ##################
+            # Backup
+            ##################
+            echo "## Backup old .war to /opt/ci/migrations/$MIG_FOLDER/backup"
+            sudo mkdir -p /opt/ci/migrations/$MIG_FOLDER/backup
+            sudo cp -Rf $CATALINA_HOME/webapps/dev.war /opt/ci/migrations/$MIG_FOLDER/backup/dev-$DATESTAMP.war
+            
+            echo "## Clear Cache"
+            cd $CATALINA_HOME/webapps
+            sudo rm -Rf dev.war
+            sudo rm -Rf dev
+            sudo rm -Rf work/Catalina/localhost/dev            
+            
+            echo "## copy .war to $CATALINA_HOME/webapps"
+            sudo cp -Rf /opt/ci/migrations/$MIG_FOLDER/*Tomcat.war $CATALINA_HOME/webapps/dev.war       
+            ''', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
           }
         }
         stage('Shutdown App Instances') {
