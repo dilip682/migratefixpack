@@ -50,8 +50,9 @@ END_SCRIPT
         # Comment out below line to download actual file &
         # add below line at the end of FTP (above bye statement)
         # get $SFTP_FILE_NAME
-        touch test.txt
-        zip /opt/ci/stage/downloads/$SFTP_FILE_NAME test.txt
+        # touch test.txt
+        # zip /opt/ci/stage/downloads/$SFTP_FILE_NAME test.txt
+        cp /opt/ci/stage/TE-Software/$SFTP_FILE_NAME .
         
         echo "##############"
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
