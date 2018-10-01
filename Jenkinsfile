@@ -45,6 +45,7 @@ pipeline {
         open sftp://sftp.bamboorose.com
         user dilip@br `echo Q29sb25lbDEh | base64 --decode`
         cd "_Software/2017R1 Release & FixPacks/Tomcat"
+        get $SFTP_FILE_NAME
         bye
 END_SCRIPT
         # Comment out below line to download actual file &
@@ -52,7 +53,7 @@ END_SCRIPT
         # get $SFTP_FILE_NAME
         # touch test.txt
         # zip /opt/ci/stage/downloads/$SFTP_FILE_NAME test.txt
-        cp /opt/ci/stage/TE-Software/$SFTP_FILE_NAME .
+        # cp /opt/ci/stage/TE-Software/$SFTP_FILE_NAME .
 
         echo "##############"
         echo "## Copy installable from /opt/ci/stage/downloads/ to transfer-and-extract workspace"
