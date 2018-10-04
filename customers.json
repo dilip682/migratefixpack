@@ -1,0 +1,100 @@
+{
+  "customers": {
+    "dcust": {
+      "name": "dcust",
+      "location": "USA",
+      "lifecycle": {
+        "dev": {
+          "app_servers": {
+            "node1": {
+              "hostname": "app-node1-host",
+              "ip_address": "10.0.3.28"
+            },
+            "node2": {
+              "hostname": "app-node2-host",
+              "ip_address": "10.0.3.28"
+            }
+          },
+          "db_servers": {
+            "node1": {
+              "hostname": "db-node1-host",
+              "ip_address": "10.0.3.148",
+              "db_name": "DEV",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            },
+            "node2": {
+              "hostname": "db-node2-host",
+              "ip_address": "10.0.3.150",
+              "db_name": "DEV",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            }
+          }
+        },
+        "test": {
+          "app_servers": {
+            "node1": {
+              "hostname": "app-node1-host",
+              "ip_address": "10.0.3.28"
+            },
+            "node2": {
+              "hostname": "app-node2-host",
+              "ip_address": "10.0.3.28"
+            }
+          },
+          "db_servers": {
+            "node1": {
+              "hostname": "db-node1-host",
+              "ip_address": "10.0.3.148",
+              "db_name": "TEST",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            },
+            "node2": {
+              "hostname": "db-node2-host",
+              "ip_address": "10.0.3.150",
+              "db_name": "TEST",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            }
+          }
+        },
+        "prod": {
+          "app_servers": {
+            "node1": {
+              "hostname": "app-node1-host",
+              "ip_address": "10.0.3.28"
+            },
+            "node2": {
+              "hostname": "app-node2-host",
+              "ip_address": "10.0.3.28"
+            }
+          },
+          "db_servers": {
+            "node1": {
+              "hostname": "db-node1-host",
+              "ip_address": "10.0.3.148",
+              "db_name": "PROD",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            },
+            "node2": {
+              "hostname": "db-node2-host",
+              "ip_address": "10.0.3.150",
+              "db_name": "PROD",
+              "port": "1521",
+              "user_name": "tssdemo",
+              "passwd": "stone01"
+            }
+          }
+        }
+      }
+    }
+  }
+}
