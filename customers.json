@@ -1,7 +1,7 @@
 {
   "customers": {
     "dcust": {
-      "name": "dcust",
+      "name": "dcust-fromJSON",
       "location": "USA",
       "lifecycle": {
         "dev": {
