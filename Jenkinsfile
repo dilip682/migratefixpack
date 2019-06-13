@@ -43,7 +43,7 @@ pipeline {
         echo "##############"
         lftp<<END_SCRIPT
         open sftp://sftp.bamboorose.com
-        user dilip@br `echo Q29sb25lbDEh | base64 --decode`
+        user dilip@br `echo ********** | base64 --decode`
         cd "_Software/2017R1 Release & FixPacks/Tomcat"
         get $SFTP_FILE_NAME
         bye
